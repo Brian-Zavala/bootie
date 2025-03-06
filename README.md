@@ -45,8 +45,8 @@
 
 1. Clone the repository
    ```sh
-   git clone https://github.com/yourusername/codeacademy-platform.git
-   cd codeacademy-platform
+   git clone https://github.com/Brian-Zavala/bootie.git
+   cd bootie
    ```
 
 2. Install server dependencies
