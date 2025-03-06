@@ -103,7 +103,7 @@ The application will be available at `http://localhost:80`.
 ## 📁 Project Structure
 
 ```
-codeacademy-platform/
+Booty/
 ├── client/                 # Frontend application
 │   ├── public/             # Static assets
 │   ├── src/
@@ -136,7 +136,7 @@ codeacademy-platform/
 ### Server (.env)
 ```
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/codeacademy
+MONGODB_URI=mongodb://localhost:27017/bootie
 JWT_SECRET=your_jwt_secret_key
 STRIPE_SECRET_KEY=your_stripe_secret_key
 STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
