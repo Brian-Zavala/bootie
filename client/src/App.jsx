@@ -52,7 +52,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<MainLayoutWrapper />}>
+          <Route path="/" element={<MainLayoutWrapper />} >
             <Route index element={<HomePage />} />
             <Route path="courses" element={<CoursesPage />} />
             <Route path="courses/:slug" element={<CourseDetailPage />} />
@@ -88,11 +88,10 @@ function App() {
               <Route path="admin/users" element={<AdminUsers />} />
               <Route path="admin/courses" element={<AdminCourses />} />
             </Route>
-            
-            {/* Error Pages */}
-            <Route path="unauthorized" element={<Unauthorized />} />
-            <Route path="*" element={<NotFound />} />
           </Route>
+          {/* Error Pages */}
+          <Route path="unauthorized" element={<Unauthorized />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

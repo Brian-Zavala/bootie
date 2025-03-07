@@ -6,17 +6,22 @@ import 'react-toastify/dist/ReactToastify.css';
 import Header from './Header';
 import Footer from './Footer';
 
-const MainLayout = () => {
+
+function MainLayout() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <main className="flex-grow">
-        <Outlet />
-      </main>
-      <Footer />
-      <ToastContainer position="bottom-right" />
+    <div>
+      {/* Your header, sidebar, and other layout elements here */}
+      <header>
+        <h1>My App</h1>
+      </header>
+      <div className="content">
+        <Outlet /> {/* This is where the content of the child routes will be rendered */}
+      </div>
+      <footer>
+        <p>&copy; 2025</p>
+      </footer>
     </div>
   );
-};
+}
 
 export default MainLayout;
