@@ -1,0 +1,38 @@
+{
+    "name": "code-academy-platform",
+    "version": "1.0.0",
+    "description": "A Boot.dev-style coding education platform",
+    "main": "index.js",
+    "scripts": {
+        "install:all": "npm install && npm run install:client && npm run install:server",
+        "install:client": "cd client && npm install",
+        "install:server": "cd server && npm install",
+        "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+        "dev:client": "cd client && npm run dev",
+        "dev:server": "cd server && npm run dev",
+        "build": "npm run build:client",
+        "build:client": "cd client && npm run build",
+        "start": "cd server && npm start",
+        "docker:build": "docker-compose build",
+        "docker:up": "docker-compose up -d",
+        "docker:down": "docker-compose down",
+        "docker:logs": "docker-compose logs -f",
+        "docker:shell:server": "docker exec -it codeacademy-server /bin/sh",
+        "docker:shell:client": "docker exec -it codeacademy-client /bin/sh",
+        "docker:prune": "docker system prune -af"
+    },
+    "keywords": [
+        "education",
+        "coding",
+        "learning",
+        "platform"
+    ],
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}

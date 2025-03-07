@@ -1,24 +1,7 @@
 // server/src/controllers/auth.js
-const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const User = require('../models/User');
-
-// Helper function to create tokens
-const createToken = (userId) => {
-  return jwt.sign(
-    { userId },
-    process.env.JWT_SECRET,
-    { expiresIn: '7d' }
-  );
-};
-
-// Set cookie options
-const cookieOptions = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict',
-  maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-};
+const authService = require('../services/auth');
 
 // Register new user
 exports.register = async (req, res) => {
@@ -46,16 +29,16 @@ exports.register = async (req, res) => {
     const user = new User({
       username,
       email,
-      password,
+      password, // Will be hashed in the pre-save hook
       firstName,
       lastName
     });
     
     await user.save();
     
-    // Create and set token
-    const token = createToken(user._id);
-    res.cookie('token', token, cookieOptions);
+    // Generate tokens and set cookies
+    const { accessToken, refreshToken } = authService.generateTokens(user._id);
+    authService.setAuthCookies(res, accessToken, refreshToken);
     
     // Return user data (without password)
     const userData = user.toObject();
@@ -97,9 +80,9 @@ exports.login = async (req, res) => {
     user.lastActive = Date.now();
     await user.save();
     
-    // Create and set token
-    const token = createToken(user._id);
-    res.cookie('token', token, cookieOptions);
+    // Generate tokens and set cookies
+    const { accessToken, refreshToken } = authService.generateTokens(user._id);
+    authService.setAuthCookies(res, accessToken, refreshToken);
     
     // Return user data (without password)
     const userData = user.toObject();
@@ -116,7 +99,7 @@ exports.login = async (req, res) => {
 
 // Logout user
 exports.logout = (req, res) => {
-  res.clearCookie('token');
+  authService.clearAuthCookies(res);
   res.json({ message: 'Logged out successfully' });
 };
 
@@ -132,32 +115,27 @@ exports.getCurrentUser = async (req, res) => {
 // Refresh token
 exports.refreshToken = async (req, res) => {
   try {
-    const token = req.cookies.token;
+    const refreshToken = req.cookies.refreshToken;
     
-    if (!token) {
-      return res.status(401).json({ message: 'No token provided' });
+    if (!refreshToken) {
+      return res.status(401).json({ message: 'No refresh token provided' });
     }
     
-    try {
-      // Verify existing token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      
-      // Find user
-      const user = await User.findById(decoded.userId).select('-password');
-      if (!user) {
-        return res.status(401).json({ message: 'User not found' });
-      }
-      
-      // Create new token
-      const newToken = createToken(user._id);
-      res.cookie('token', newToken, cookieOptions);
-      
-      res.json({ message: 'Token refreshed', user });
-    } catch (error) {
-      // Token expired or invalid
-      res.clearCookie('token');
-      return res.status(401).json({ message: 'Invalid token' });
+    // Refresh the token
+    const tokens = await authService.refreshAccessToken(refreshToken);
+    
+    if (!tokens) {
+      authService.clearAuthCookies(res);
+      return res.status(401).json({ message: 'Invalid refresh token' });
     }
+    
+    // Set new tokens as cookies
+    authService.setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+    
+    // Find and return user
+    const user = await User.findById(authService.verifyToken(tokens.accessToken).userId).select('-password');
+    
+    res.json({ message: 'Token refreshed', user });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }

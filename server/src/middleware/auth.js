@@ -1,20 +1,53 @@
 // server/src/middleware/auth.js
-const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const authService = require('../services/auth');
 
+/**
+ * Middleware to authenticate requests using JWT
+ */
 const authenticate = async (req, res, next) => {
   try {
     // Get token from cookies or Authorization header
-    const token = req.cookies.token || 
-                  (req.headers.authorization && req.headers.authorization.startsWith('Bearer') 
-                  ? req.headers.authorization.split(' ')[1] : null);
+    const accessToken = req.cookies.accessToken || 
+                      (req.headers.authorization && req.headers.authorization.startsWith('Bearer') 
+                      ? req.headers.authorization.split(' ')[1] : null);
     
-    if (!token) {
+    if (!accessToken) {
       return res.status(401).json({ message: 'Authentication required' });
     }
     
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = authService.verifyToken(accessToken);
+    
+    if (!decoded) {
+      // Try to refresh the token if a refresh token is available
+      const refreshToken = req.cookies.refreshToken;
+      
+      if (!refreshToken) {
+        return res.status(401).json({ message: 'Authentication required' });
+      }
+      
+      const tokens = await authService.refreshAccessToken(refreshToken);
+      
+      if (!tokens) {
+        authService.clearAuthCookies(res);
+        return res.status(401).json({ message: 'Authentication required' });
+      }
+      
+      // Set new tokens
+      authService.setAuthCookies(res, tokens.accessToken, tokens.refreshToken);
+      
+      // Get user from new token
+      const newDecoded = authService.verifyToken(tokens.accessToken);
+      const user = await User.findById(newDecoded.userId).select('-password');
+      
+      if (!user) {
+        return res.status(401).json({ message: 'User not found' });
+      }
+      
+      req.user = user;
+      return next();
+    }
     
     // Find user
     const user = await User.findById(decoded.userId).select('-password');
@@ -30,6 +63,10 @@ const authenticate = async (req, res, next) => {
   }
 };
 
+/**
+ * Middleware to authorize based on user roles
+ * @param {Array} roles - Array of allowed roles
+ */
 const authorizeRoles = (...roles) => {
   return (req, res, next) => {
     if (!req.user || !roles.includes(req.user.role)) {
