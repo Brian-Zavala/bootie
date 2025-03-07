@@ -11,15 +11,15 @@ function MainLayout() {
   return (
     <div>
       {/* Your header, sidebar, and other layout elements here */}
-      <header>
+      <Header>
         <h1>My App</h1>
-      </header>
+      </Header>
       <div className="content">
         <Outlet /> {/* This is where the content of the child routes will be rendered */}
       </div>
-      <footer>
+      <Footer>
         <p>&copy; 2025</p>
-      </footer>
+      </Footer>
     </div>
   );
 }
