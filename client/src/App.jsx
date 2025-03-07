@@ -9,33 +9,33 @@ import PrivateRoute from './components/PrivateRoute';
 import HomePage from './pages/home/HomePage';
 import CoursesPage from './pages/courses/CoursesPage';
 import CourseDetailPage from './pages/courses/CourseDetailPage';
-import PricingPage from './pages/PricingPage';
+// import PricingPage from './pages/PricingPage';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
-import ForgotPassword from './pages/auth/ForgotPassword';
-import ResetPassword from './pages/auth/ResetPassword';
+// import ForgotPassword from './pages/auth/ForgotPassword';
+// import ResetPassword from './pages/auth/ResetPassword';
 
 // Protected pages
-import Dashboard from './pages/dashboard/Dashboard';
-import LearningPage from './pages/learning/LearningPage';
-import ProfilePage from './pages/profile/ProfilePage';
-import SubscriptionPage from './pages/profile/SubscriptionPage';
-import ProgressPage from './pages/profile/ProgressPage';
+// import Dashboard from './pages/dashboard/Dashboard';
+// import LearningPage from './pages/learning/LearningPage';
+// import ProfilePage from './pages/profile/ProfilePage';
+// import SubscriptionPage from './pages/profile/SubscriptionPage';
+// import ProgressPage from './pages/profile/ProgressPage';
 
 // Instructor pages
-import InstructorDashboard from './pages/instructor/InstructorDashboard';
-import InstructorCourses from './pages/instructor/InstructorCourses';
-import CourseEditor from './pages/instructor/CourseEditor';
-import ExerciseEditor from './pages/instructor/ExerciseEditor';
+// import InstructorDashboard from './pages/instructor/InstructorDashboard';
+// import InstructorCourses from './pages/instructor/InstructorCourses';
+// import CourseEditor from './pages/instructor/CourseEditor';
+// import ExerciseEditor from './pages/instructor/ExerciseEditor';
 
 // Admin pages
-import AdminDashboard from './pages/admin/AdminDashboard';
-import AdminUsers from './pages/admin/AdminUsers';
-import AdminCourses from './pages/admin/AdminCourses';
+// import AdminDashboard from './pages/admin/AdminDashboard';
+// import AdminUsers from './pages/admin/AdminUsers';
+// import AdminCourses from './pages/admin/AdminCourses';
 
 // Error pages
-import NotFound from './pages/NotFound';
-import Unauthorized from './pages/Unauthorized';
+// import NotFound from './pages/NotFound';
+// import Unauthorized from './pages/Unauthorized';
 
 function App() {
   return (
