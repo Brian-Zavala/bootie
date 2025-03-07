@@ -1,6 +1,6 @@
 // src/pages/instructor/ExerciseEditor.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import apiClient from '../../api/client';

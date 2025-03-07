@@ -1,6 +1,6 @@
 // src/pages/learning/LearningPage.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 import apiClient from '../../api/client';
 import Exercise from '../../components/learning/Exercise';
 import LoadingSpinner from '../../components/common/LoadingSpinner';

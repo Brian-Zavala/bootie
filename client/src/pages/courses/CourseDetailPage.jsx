@@ -1,6 +1,6 @@
 // src/pages/courses/CourseDetailPage.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 import apiClient from '../../api/client';
 import Button from '../../components/common/Button';

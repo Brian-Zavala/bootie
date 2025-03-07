@@ -1,6 +1,6 @@
 // src/pages/auth/ResetPassword.jsx
 import React from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Button from '../../components/common/Button';

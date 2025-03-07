@@ -1,6 +1,6 @@
 // src/pages/courses/CoursesPage.jsx
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import apiClient from '../../api/client';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 

@@ -1,6 +1,6 @@
 // src/pages/home/HomePage.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import Button from '../../components/common/Button';
 
 const HomePage = () => {

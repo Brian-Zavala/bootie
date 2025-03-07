@@ -1,6 +1,6 @@
 // src/pages/profile/SubscriptionPage.jsx
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import apiClient from '../../api/client';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../components/common/Button';
