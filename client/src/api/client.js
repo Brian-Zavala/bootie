@@ -9,29 +9,17 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  withCredentials: true // To handle cookies
+  withCredentials: true // Important for cookie-based auth
 });
 
-// Add request interceptor to handle errors
-apiClient.interceptors.request.use(
-  config => {
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  }
-);
-
-// Add response interceptor to handle errors
+// Add a response interceptor to handle token refreshing
 apiClient.interceptors.response.use(
-  response => {
-    return response;
-  },
+  response => response,
   async error => {
     const originalRequest = error.config;
     
     // If error is 401 and not already retrying
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       
       try {

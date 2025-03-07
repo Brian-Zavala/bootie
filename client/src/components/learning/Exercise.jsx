@@ -1,16 +1,37 @@
-// src/components/learning/Exercise.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import apiClient from '../../api/client';
 import CodeEditor from './CodeEditor';
 import Button from '../common/Button';
 import LoadingSpinner from '../common/LoadingSpinner';
 
-const Exercise = ({ exercise, onComplete }) => {
-  const [solution, setSolution] = useState(exercise.codeTemplate || '');
+const Exercise = ({ exerciseId, onComplete }) => {
+  const [exercise, setExercise] = useState(null);
+  const [solution, setSolution] = useState('');
   const [results, setResults] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showHint, setShowHint] = useState(false);
   const [currentHint, setCurrentHint] = useState(0);
+  
+  useEffect(() => {
+    const fetchExercise = async () => {
+      try {
+        const response = await apiClient.get(`/exercises/${exerciseId}`);
+        const exerciseData = response.data.exercise;
+        setExercise(exerciseData);
+        setSolution(exerciseData.codeTemplate || '');
+        setLoading(false);
+      } catch (err) {
+        setError('Failed to load exercise. Please try again later.');
+        setLoading(false);
+      }
+    };
+    
+    if (exerciseId) {
+      fetchExercise();
+    }
+  }, [exerciseId]);
   
   const handleCodeChange = (code) => {
     setSolution(code);
@@ -30,10 +51,10 @@ const Exercise = ({ exercise, onComplete }) => {
       if (response.data.passed && onComplete) {
         onComplete(response.data);
       }
-    } catch (error) {
+    } catch (err) {
       setResults({
         passed: false,
-        error: error.response?.data?.message || 'An error occurred while submitting your solution'
+        error: err.response?.data?.message || 'An error occurred while submitting your solution'
       });
     } finally {
       setIsSubmitting(false);
@@ -41,7 +62,7 @@ const Exercise = ({ exercise, onComplete }) => {
   };
   
   const showNextHint = () => {
-    if (currentHint < exercise.hints.length - 1) {
+    if (currentHint < (exercise?.hints?.length || 0) - 1) {
       setCurrentHint(currentHint + 1);
     }
   };
@@ -67,14 +88,13 @@ const Exercise = ({ exercise, onComplete }) => {
         
         setResults(response.data);
         
-        // If exercise is completed successfully, notify parent component
         if (response.data.passed && onComplete) {
           onComplete(response.data);
         }
-      } catch (error) {
+      } catch (err) {
         setResults({
           passed: false,
-          error: error.response?.data?.message || 'An error occurred while submitting your answer'
+          error: err.response?.data?.message || 'An error occurred while submitting your answer'
         });
       } finally {
         setIsSubmitting(false);
@@ -84,7 +104,7 @@ const Exercise = ({ exercise, onComplete }) => {
     return (
       <div className="space-y-4">
         <div className="space-y-2">
-          {exercise.options.map((option, index) => (
+          {exercise?.options?.map((option, index) => (
             <div key={index} className="flex items-center">
               <input
                 type="checkbox"
@@ -130,14 +150,13 @@ const Exercise = ({ exercise, onComplete }) => {
         
         setResults(response.data);
         
-        // If exercise is completed successfully, notify parent component
         if (response.data.passed && onComplete) {
           onComplete(response.data);
         }
-      } catch (error) {
+      } catch (err) {
         setResults({
           passed: false,
-          error: error.response?.data?.message || 'An error occurred while submitting your answer'
+          error: err.response?.data?.message || 'An error occurred while submitting your answer'
         });
       } finally {
         setIsSubmitting(false);
@@ -168,6 +187,18 @@ const Exercise = ({ exercise, onComplete }) => {
       </div>
     );
   };
+  
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+  
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
+  
+  if (!exercise) {
+    return <div>Exercise not found</div>;
+  }
   
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">

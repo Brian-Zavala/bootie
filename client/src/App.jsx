@@ -1,6 +1,5 @@
-// src/App.jsx
 import React from 'react';
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router';
+import { BrowserRouter, Routes, Route } from 'react-router';
 import { AuthProvider } from './contexts/AuthContext';
 import MainLayout from './components/layout/MainLayout';
 import PrivateRoute from './components/PrivateRoute';
@@ -37,22 +36,13 @@ import AdminCourses from './pages/admin/AdminCourses';
 import NotFound from './pages/NotFound';
 import Unauthorized from './pages/Unauthorized';
 
-// Wrapper for MainLayout to handle nested routes
-function MainLayoutWrapper() {
-  return (
-    <MainLayout>
-      <Outlet />
-    </MainLayout>
-  );
-}
-
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<MainLayoutWrapper />} >
+          <Route path="/" element={<MainLayout />}>
             <Route index element={<HomePage />} />
             <Route path="courses" element={<CoursesPage />} />
             <Route path="courses/:slug" element={<CourseDetailPage />} />
@@ -62,7 +52,7 @@ function App() {
             <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="reset-password/:token" element={<ResetPassword />} />
             
-            {/* Student Routes */}
+            {/* Protected Routes */}
             <Route element={<PrivateRoute />}>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="my-courses" element={<Dashboard />} />
@@ -88,10 +78,11 @@ function App() {
               <Route path="admin/users" element={<AdminUsers />} />
               <Route path="admin/courses" element={<AdminCourses />} />
             </Route>
+            
+            {/* Error Pages */}
+            <Route path="unauthorized" element={<Unauthorized />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
-          {/* Error Pages */}
-          <Route path="unauthorized" element={<Unauthorized />} />
-          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
