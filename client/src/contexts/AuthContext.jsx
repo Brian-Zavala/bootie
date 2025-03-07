@@ -3,7 +3,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import apiClient from '../api/client';
 import { toast } from 'react-toastify';
 
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -12,20 +12,25 @@ export const AuthProvider = ({ children }) => {
 
   // Check if user is already logged in on initial load
   useEffect(() => {
+    let isMounted = true;
     const checkAuth = async () => {
       try {
         const response = await apiClient.get('/auth/me');
-        setUser(response.data.user);
+        if (isMounted) setUser(response.data.user);
       } catch (error) {
-        // Not logged in or token expired
-        setUser(null);
+        if (isMounted) setUser(null);
       } finally {
-        setLoading(false);
-        setInitialized(true);
+        if (isMounted) {
+          setLoading(false);
+          setInitialized(true);
+        }
       }
     };
-    
+
     checkAuth();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const login = async (email, password) => {
@@ -78,15 +83,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      loading, 
-      initialized,
-      login, 
-      register, 
-      logout,
-      updateProfile
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        initialized,
+        login,
+        register,
+        logout,
+        updateProfile,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -99,3 +106,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
+export default AuthContext;
