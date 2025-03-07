@@ -204,4 +204,78 @@ const InstructorDashboard = () => {
                       <Link to={`/instructor/courses/${course._id}/edit`} className="text-indigo-600 hover:text-indigo-900 mr-4">
                         Edit
                       </Link>
-                      <Link to={`/courses/${course.slug}`} className="text
+                      <Link to={`/courses/${course.slug}`} className="text-indigo-600 hover:text-indigo-900">
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+      
+      {/* Recent Activity */}
+      <div className="mt-8 bg-white rounded-lg shadow overflow-hidden">
+        <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-gray-900">Recent Activity</h2>
+        </div>
+        
+        <div className="p-6">
+          <ul className="space-y-4">
+            <li className="flex items-start">
+              <div className="flex-shrink-0">
+                <span className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
+                  <svg className="h-5 w-5 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </span>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-gray-900">
+                  <span className="font-medium">John Doe</span> enrolled in <span className="font-medium">JavaScript Fundamentals</span>
+                </p>
+                <p className="text-sm text-gray-500">2 hours ago</p>
+              </div>
+            </li>
+            
+            <li className="flex items-start">
+              <div className="flex-shrink-0">
+                <span className="h-8 w-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                  <svg className="h-5 w-5 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                  </svg>
+                </span>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-gray-900">
+                  <span className="font-medium">Jane Smith</span> left a 5-star review on <span className="font-medium">React for Beginners</span>
+                </p>
+                <p className="text-sm text-gray-500">1 day ago</p>
+              </div>
+            </li>
+            
+            <li className="flex items-start">
+              <div className="flex-shrink-0">
+                <span className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                  <svg className="h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </span>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-gray-900">
+                  <span className="font-medium">Michael Brown</span> completed <span className="font-medium">JavaScript Fundamentals</span>
+                </p>
+                <p className="text-sm text-gray-500">2 days ago</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default InstructorDashboard;
